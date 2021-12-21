@@ -53,7 +53,7 @@ namespace WpfApp21.ViewModel
         {
             ExitAppCommand = new RelayCommand(s =>
             {
-                  Application.Current.Shutdown();
+                Application.Current.Shutdown();
             });
 
             AddNewTaskCommand = new RelayCommand(s =>
@@ -81,10 +81,18 @@ namespace WpfApp21.ViewModel
 
             KillTaskCommand = new RelayCommand(s =>
             {
-                if (SelectedIndex != -1)
-                    Proces[SelectedIndex].Kill();
-                else
-                    KillBtnEnabled=false;
+                try
+                {
+                    if (SelectedIndex != -1)
+                        Proces[SelectedIndex].Kill();
+                    else
+                        KillBtnEnabled = false;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             });
         }
 
@@ -92,11 +100,19 @@ namespace WpfApp21.ViewModel
         {
             await Task.Run(() =>
             {
-                Thread.Sleep(5000);
-                foreach (var black in BlackList)
-                    black.Kill();
-                BlackList.Clear();
-                MessageBox.Show("Your BlackList Cleared");
+                try
+                {
+
+                    Thread.Sleep(5000);
+                    foreach (var black in BlackList)
+                        black.Kill();
+                    BlackList.Clear();
+                    MessageBox.Show("Your BlackList Cleared");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             });
         }
         private void Timer_Tick(object sender, EventArgs e)
