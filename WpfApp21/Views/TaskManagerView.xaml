@@ -54,8 +54,8 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Id,UpdateSourceTrigger=PropertyChanged}" Header="Id"  Width="100"  ></GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding  ProcessName ,UpdateSourceTrigger=PropertyChanged}" Header="Name" Width="150" ></GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding  HandleCount ,UpdateSourceTrigger=PropertyChanged}" Header="Handle" Width="120" ></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding ProcessName ,UpdateSourceTrigger=PropertyChanged}" Header="Name" Width="150" ></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding HandleCount ,UpdateSourceTrigger=PropertyChanged}" Header="Handle" Width="120" ></GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Threads.Count,UpdateSourceTrigger=PropertyChanged}" Header="ThreadCount" Width="100" ></GridViewColumn>
                 </GridView>
             </ListView.View>
@@ -64,6 +64,13 @@
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="Click">
                     <b:InvokeCommandAction Command="{Binding KillTaskCommand}"/>
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </Button>
+        <Button IsEnabled="{Binding KillBtnEnabled,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 120 15" FontSize="20" Content="BlackList">
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="Click">
+                    <b:InvokeCommandAction Command="{Binding BlackListCommand}"/>
                 </b:EventTrigger>
             </b:Interaction.Triggers>
         </Button>

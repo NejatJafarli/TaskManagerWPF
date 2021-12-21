@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -18,6 +19,7 @@ namespace WpfApp21.ViewModel
         public RelayCommand LoadedWindowCommand { get; set; }
         public RelayCommand KillTaskCommand { get; set; }
         public RelayCommand AddNewTaskCommand { get; set; }
+        public RelayCommand BlackListCommand { get; set; }
 
 
 
@@ -46,6 +48,7 @@ namespace WpfApp21.ViewModel
 
 
         public ObservableCollection<Process> Proces { get; set; } = new ObservableCollection<Process>(Process.GetProcesses().ToList().OrderBy(x => x.ProcessName).ToList());
+        public ObservableCollection<Process> BlackList { get; set; } = new ObservableCollection<Process>();
         public TaskManagerViewModel()
         {
             ExitAppCommand = new RelayCommand(s =>
@@ -57,6 +60,13 @@ namespace WpfApp21.ViewModel
             {
                 var temp = new AddView();
                 temp.ShowDialog();
+            });
+
+            BlackListCommand = new RelayCommand(s =>
+            {
+                BlackList.Add(Proces[SelectedIndex]);
+                MessageBox.Show("Selected Task Added BlackList");
+                KillBlackList();
             });
 
             LoadedWindowCommand = new RelayCommand(s =>
@@ -78,6 +88,17 @@ namespace WpfApp21.ViewModel
             });
         }
 
+        private async void KillBlackList()
+        {
+            await Task.Run(() =>
+            {
+                Thread.Sleep(5000);
+                foreach (var black in BlackList)
+                    black.Kill();
+                BlackList.Clear();
+                MessageBox.Show("Your BlackList Cleared");
+            });
+        }
         private void Timer_Tick(object sender, EventArgs e)
         {
             if (SelectedIndex == -1)
